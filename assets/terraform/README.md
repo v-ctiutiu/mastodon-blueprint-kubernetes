@@ -1,6 +1,4 @@
-# Mastodon Infrastrucure Automation via Terraform
-
-**WORK IN PROGRESS**
+# Mastodon Infrastructure Automation via Terraform
 
 ## Overview
 
@@ -9,7 +7,7 @@ Terraform is a very popular tool used for infra tasks automation, and it works v
 The Terraform code provided in this repository is able to:
 
 1. Provision a DOKS cluster to deploy the Bitnami Mastodon Helm chart via [doks.tf](./doks.tf).
-2. Install and configure the Bitnami Mastodon Helm release via [k8s-config.tf](./k8s-config.tf).
+2. Kubernetes specific configuration for Mastodon via [k8s-config.tf](./k8s-config.tf).
 3. Install and configure a DO managed PostgreSQL cluster via [managed-postgres.tf](./managed-postgres.tf).
 4. Install and configure a DO managed Redis cluster via [managed-redis.tf](./managed-redis.tf).
 5. Install and configure a DO Spaces bucket via [s3.tf](./s3.tf).
@@ -17,11 +15,7 @@ The Terraform code provided in this repository is able to:
 
 The Terraform code can be used as a module in other projects as well, if desired.
 
-**Important note:**
-
-The Terraform code provided in this repo is meant to be used as a complete solution to provision everything using DigitalOcean as the main cloud provider. It is designed to be a 1-click solution, except for the Helm part. Unfortunately, due to some inconsistency in either the Helm provider or the Bitnami packaged chart, the Mastodon Helm installation fails when performed via Terraform. Until a fix is found, the Mastodon Helm release is performed via manual steps.
-
-All important aspects are configured via Terraform input variables. A [mastodon.tfvars.sample](./mastodon.tfvars.sample) file is provided to get you started quickly.
+All important aspects are configured via Terraform input variables. Some [sample .tfvars files](variants/) are provided to get you started quickly.
 
 ## Requirements
 
@@ -71,45 +65,10 @@ variable "doks_additional_node_pools" {
 
 ## Managing Kubernetes Configuration
 
-Following input variables are available to configure Kubernetes stuff - the Mastodon Helm release (each variable purpose is explained in the `description` field):
+Following input variables are available to configure Kubernetes stuff:
 
 ```json
-# =============== MASTODON CONFIG VARS ==================
-
-variable "enable_mastodon_helm_release" {
-  type = bool
-  default = true
-  description = "Enable/disable Bitnami Mastodon Helm chart deployment on DOKS"
-}
-
-variable "mastodon_helm_repo" {
-  type        = string
-  default     = "https://charts.bitnami.com/bitnami"
-  description = "Mastodon Helm chart repository URL"
-}
-
-variable "mastodon_helm_chart" {
-  type        = string
-  default     = "mastodon"
-  description = "Mastodon Helm chart name"
-}
-
-variable "mastodon_helm_release_name" {
-  type        = string
-  default     = "mastodon"
-  description = "Mastodon Helm release name"
-}
-
-variable "mastodon_helm_chart_version" {
-  type        = string
-  default     = "0.1.2"
-  description = "Mastodon Helm chart version to deploy"
-}
-variable "mastodon_helm_chart_timeout_seconds" {
-  type        = number
-  default     = 300
-  description = "Timeout value for Helm chart install/upgrade operations"
-}
+# =============== K8S CONFIG VARS ==================
 
 variable "mastodon_k8s_namespace" {
   type        = string
@@ -117,30 +76,9 @@ variable "mastodon_k8s_namespace" {
   description = "Kubernetes namespace to use for the Mastodon Helm release"
 }
 
-variable "mastodon_web_component_node_affinity_label" {
-  type = string
-  default = ""
-}
-
-variable "mastodon_streaming_component_node_affinity_label" {
-  type = string
-  default = ""
-}
-
-variable "mastodon_sidekiq_component_node_affinity_label" {
-  type = string
-  default = ""
-}
-
 variable "mastodon_web_domain" {
   type = string
   description = "Sets the domain name for your Mastodon instance (REQUIRED)"
-}
-
-variable "mastodon_additional_helm_values_file" {
-  type = string
-  default = "mastodon-helm-values.yaml"
-  description = "Additional Helm values to use"
 }
 ```
 
@@ -289,37 +227,3 @@ variable "s3_bucket_access_key_secret" {
   description = "Mastodon DO Spaces S3 bucket access key secret"
 }
 ```
-
-## Using Terraform to Provision Mastodon Infrastructure
-
-Follow below steps to get started:
-
-1. Clone this repo and change directory to `assets/terraform`.
-2. Initialize Terraform backend:
-
-    ```shell
-    terraform init
-    ```
-
-3. Copy and rename the `mastodon.tfvars.sample` file to `mastodon.tfvars`:
-
-    ```shell
-    cp mastodon.tfvars.sample mastodon.tfvars
-    ```
-
-4. Open the `mastodon.tfvars` file and adjust settings according to your needs using a text editor of your choice (prefarrably with [HCL](https://github.com/hashicorp/hcl/blob/main/hclsyntax/spec.md) lint suppport).
-5. Use `terraform plan` to inspect infra changes before applying:
-
-    ```shell
-    terraform plan -var-file=mastodon.tfvars -out tf-mastodon.out
-    ```
-
-6. If you're happy with the changes, issue `terraform apply`:
-
-    ```console
-    terraform apply "tf-mastodon.out"
-    ```
-
-If everything goes as planned, you should be able to see all infrastructure components provisioned and configured as stated in the `mastodon.tfvars` input configuration file.
-
-**TBD.**

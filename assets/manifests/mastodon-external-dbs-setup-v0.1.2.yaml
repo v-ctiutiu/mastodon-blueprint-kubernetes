@@ -63,6 +63,8 @@ postgresql:
 elasticsearch:
   enabled: true
 
+# Uncomment below lines if you want to configure DB tier here and not via the Helm CLI
+#
 # externalDatabase:
 #   host: "<YOUR_PG_SQL_DB_HOST_HERE>"
 #   port: <YOUR_PG_SQL_DB_PORT_HERE>
@@ -87,6 +89,8 @@ elasticsearch:
 minio:
   enabled: false
 
+# Uncomment below lines if you want to configure DB tier here and not via the Helm CLI
+#
 # externalS3:
 #   host: "<YOUR_DO_SPACES_HOST_HERE>"
 #   bucket: "<YOUR_DO_SPACES_BUCKET_NAME_HERE>"

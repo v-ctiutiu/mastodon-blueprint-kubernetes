@@ -1,7 +1,5 @@
 # Setting up Mastodon on DOKS using Terraform
 
-**WORK IN PROGRESS**
-
 ## Introduction
 
 This write up is meant to be a quick start guide for newcomers (and not only) to setup a Mastodon instance running on [DOKS](https://www.digitalocean.com/products/kubernetes) (DigitalOcean managed Kubernetes solution). It starts with a high level overview of Mastodon and all involved components. Then, you will be guided through the initial installation and configuration steps covering the infrastructure tier provisioning ([Terraform](https://www.terraform.io)), then the application tier deployment ([Helm](https://www.helm.sh)). Finally, you should be able to see your final Mastodon instance alive and kicking and also evaluate its performance under load.
@@ -354,35 +352,31 @@ Follow below steps to get started:
     export DIGITALOCEAN_TOKEN="<YOUR_DO_ACCESS_TOKEN_HERE>"
     ```
 
-2. Clone this repo, and change directory to `assets/terraform` (if not already):
+2. Change folder path to Terraform project (if not already):
 
     ```shell
-    git clone https://github.com/digitalocean/mastodon-blueprint-kubernetes.git
-
     cd mastodon-blueprint-kubernetes/assets/terraform
     ```
 
-3. Initialize Terraform backend:
-
-    ```shell
-    terraform init
-    ```
-
-4. Pick a sample `.tfvars` file from the [variants](assets/terraform/variants/) folder and adjust settings according to your needs using a text editor of your choice (preferably with [HCL](https://github.com/hashicorp/hcl/blob/main/hclsyntax/spec.md) linting support). For example, you can use [VS Code](https://code.visualstudio.com) (pick only one option, depending on the desired setup):
+3. Pick a sample `.tfvars` file from the [variants](assets/terraform/variants/) folder and adjust settings according to your needs using a text editor of your choice (preferably with [HCL](https://github.com/hashicorp/hcl/blob/main/hclsyntax/spec.md) linting support). For example, you can use [VS Code](https://code.visualstudio.com). Pick only one option, depending on the desired setup:
 
     - **Kubernetes as the hosting platform for database and storage Tier:**
 
       ```shell
+      cp variants/mastodon-default-dbs-setup.tfvars.sample variants/mastodon-default-dbs-setup.tfvars
+
       code variants/mastodon-default-dbs-setup.tfvars
       ```
 
     - **DigitalOcean managed database and storage tier:**
 
       ```shell
+      cp variants/mastodon-external-dbs-setup.tfvars.sample variants/mastodon-external-dbs-setup.tfvars
+
       code variants/mastodon-external-dbs-setup.tfvars
       ```
 
-5. Use `terraform plan` to preview infra changes (pick only one option, depending on the desired setup):
+4. Use `terraform plan` to preview infra changes (pick only one option, depending on the desired setup):
 
     - **Kubernetes as the hosting platform for database and storage tier:**
 
@@ -400,7 +394,7 @@ Follow below steps to get started:
         -out tf-mastodon-external-dbs-setup.out
       ```
 
-6. Finally, if you're OK with the infra plan, run `terraform apply` (pick only one option, depending on the desired setup):
+5. Finally, if you're OK with the infra plan, run `terraform apply` (pick only one option, depending on the desired setup):
 
     - **Kubernetes as the hosting platform for database and storage tier:**
 

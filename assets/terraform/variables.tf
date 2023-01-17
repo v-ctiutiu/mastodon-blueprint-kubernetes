@@ -34,7 +34,7 @@ variable "doks_additional_node_pools" {
   description = "DOKS cluster additional node pool configuration"
 }
 
-# =============== MASTODON CONFIG VARS ================== #
+# =============== K8S CONFIG VARS ================== #
 
 variable "mastodon_k8s_namespace" {
   type        = string
@@ -151,14 +151,6 @@ variable "redis_cluster_node_count" {
   type        = number
   default     = 1
   description = "DO managed Redis cluster node count"
-}
-
-# ====================== EXTERNAL ELASTICSEARCH CONFIG VARS ====================== #
-
-variable "enable_external_elasticsearch" {
-  type        = bool
-  default     = false
-  description = "Enable external Elasticsearch cluster (self managed)"
 }
 
 # ====================== EXTERNAL S3 CONFIG VARS (DO MANAGED) ==================== #
