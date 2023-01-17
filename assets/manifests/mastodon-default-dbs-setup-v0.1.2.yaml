@@ -1,0 +1,117 @@
+# ==================== Administrator Credentials ====================== #
+adminUser: "<YOUR_ADMIN_USER_NAME_HERE>"
+adminPassword: "<YOUR_ADMIN_USER_PASSWORD_HERE>"
+adminEmail: "<YOUR_ADMIN_USER_EMAIL_ADDRESS_HERE>"
+
+
+# ==================== Common Settings ====================== #
+
+## Enable the search engine (uses Elasticsearch under the hood)
+##
+enableSearches: true
+
+## Enable the S3 storage engine
+##
+enableS3: true
+
+## Web domain for Mastodon
+## For example, visit GoDaddy and buy a valid domain to use below
+##
+webDomain: "<YOUR_WEB_DOMAIN_HERE>"
+
+## Mastodon Web Parameters
+##
+web:
+  ## Number of Mastodon web replicas to deploy
+  ##
+  replicaCount: 2
+
+## Mastodon Sidekiq Parameters
+##
+sidekiq:
+  ## Number of Mastodon sidekiq replicas to deploy
+  ##
+  replicaCount: 2
+
+## Mastodon Streaming Parameters
+##
+streaming:
+  ## Number of Mastodon streaming replicas to deploy
+  ##
+  replicaCount: 2
+
+
+## =============== In-Kubernetes Database Tier =============== ##
+
+## Redis chart configuration
+## ref: https://github.com/bitnami/charts/tree/main/bitnami/redis
+##
+redis:
+  enabled: true
+  # Master node settings
+  master:
+    persistence:
+      enabled: true
+      size: 10Gi
+  # Replica nodes settings
+  replica:
+    enabled: true
+    persistence:
+      size: 10Gi
+
+## PostgreSQL chart configuration
+## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
+##
+postgresql:
+  enabled: true
+  # Primary database settings
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 250m
+  # Read replicas settings
+  readReplicas:
+    persistence:
+      enabled: true
+      size: 10Gi
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 250m
+
+## Elasticsearch chart configuration
+## https://github.com/bitnami/charts/blob/main/bitnami/elasticsearch/values.yaml
+##
+elasticsearch:
+  enabled: true
+
+
+## =============== In-Kubernetes S3 Storage Tier =============== ##
+
+## MinIO chart configuration
+## ref: https://github.com/bitnami/charts/tree/main/bitnami/minio
+##
+minio:
+  enabled: true
+  persistence:
+    enabled: true
+    size: 10Gi
+
+
+# ==================== Service Configuration ===================== #
+
+## Apache chart configuration
+## ref: https://github.com/bitnami/charts/tree/main/bitnami/apache
+##
+apache:
+  enabled: true
+  service:
+    annotations:
+      service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
+      service.beta.kubernetes.io/do-loadbalancer-certificate-id: "<YOUR_DOCTL_COMPUTE_CERTIFICATE_ID_HERE>"
+      service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: "false"
+
