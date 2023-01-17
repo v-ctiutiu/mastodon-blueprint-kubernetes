@@ -16,9 +16,9 @@ resource "digitalocean_kubernetes_cluster" "mastodon" {
   version = data.digitalocean_kubernetes_versions.current.latest_version
 
   node_pool {
-    name       = var.doks_default_node_pool["name"]
-    size       = var.doks_default_node_pool["size"]
-    node_count = var.doks_default_node_pool["node_count"]
+    name       = var.doks_primary_node_pool["name"]
+    size       = var.doks_primary_node_pool["size"]
+    node_count = var.doks_primary_node_pool["node_count"]
   }
 }
 

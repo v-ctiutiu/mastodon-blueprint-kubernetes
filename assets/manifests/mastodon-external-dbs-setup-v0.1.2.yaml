@@ -1,0 +1,108 @@
+# ==================== Administrator Credentials ====================== #
+adminUser: "<YOUR_ADMIN_USER_NAME_HERE>"
+adminPassword: "<YOUR_ADMIN_USER_PASSWORD_HERE>"
+adminEmail: "<YOUR_ADMIN_USER_EMAIL_ADDRESS_HERE>"
+
+
+# ==================== Common Settings ====================== #
+
+## Enable the search engine (uses Elasticsearch under the hood)
+##
+enableSearches: true
+
+## Enable the S3 storage engine
+##
+enableS3: true
+
+## Web domain for Mastodon
+## For example, visit GoDaddy and buy a valid domain to use below
+##
+webDomain: "<YOUR_WEB_DOMAIN_HERE>"
+
+## Mastodon Web Parameters
+##
+web:
+  ## Number of Mastodon web replicas to deploy
+  ##
+  replicaCount: 2
+
+## Mastodon Sidekiq Parameters
+##
+sidekiq:
+  ## Number of Mastodon sidekiq replicas to deploy
+  ##
+  replicaCount: 2
+
+## Mastodon Streaming Parameters
+##
+streaming:
+  ## Number of Mastodon streaming replicas to deploy
+  ##
+  replicaCount: 2
+
+
+## ============ External Database Tier (DO Managed) ============ ##
+
+# In-Kubernetes setup must be disabled first (except ElasticSearch)
+
+## Redis chart configuration
+## ref: https://github.com/bitnami/charts/tree/main/bitnami/redis
+##
+redis:
+  enabled: false
+
+## PostgreSQL chart configuration
+## ref: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
+##
+postgresql:
+  enabled: false
+
+## Elasticsearch chart configuration
+## https://github.com/bitnami/charts/blob/main/bitnami/elasticsearch/values.yaml
+##
+elasticsearch:
+  enabled: true
+
+# externalDatabase:
+#   host: "<YOUR_PG_SQL_DB_HOST_HERE>"
+#   port: <YOUR_PG_SQL_DB_PORT_HERE>
+#   database: "YOUR_PG_SQL_DB_NAME_HERE"
+#   existingSecret: "pgsql-auth"
+#   existingSecretPasswordKey: "db-password"
+
+# externalRedis:
+#   host: "<YOUR_REDIS_HOST_HERE>"
+#   port: <YOUR_REDIS_PORT_HERE>
+#   existingSecret: "redis-auth"
+#   existingSecretPasswordKey: "db-password"
+
+
+## ======== External S3 Storage Tier (DO Spaces) ======== ##
+
+# In-Kubernetes S3 storage must be disabled first
+
+## MinIO chart configuration
+## ref: https://github.com/bitnami/charts/tree/main/bitnami/minio
+##
+minio:
+  enabled: false
+
+# externalS3:
+#   host: "<YOUR_DO_SPACES_HOST_HERE>"
+#   bucket: "<YOUR_DO_SPACES_BUCKET_NAME_HERE>"
+#   region: "us-east-1"
+
+
+# ==================== Service Configuration ===================== #
+
+## Apache chart configuration
+## ref: https://github.com/bitnami/charts/tree/main/bitnami/apache
+##
+apache:
+  enabled: true
+  service:
+    annotations:
+      service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
+      service.beta.kubernetes.io/do-loadbalancer-certificate-id: "<YOUR_DOCTL_COMPUTE_CERTIFICATE_ID_HERE>"
+      service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: "false"
+

@@ -4,7 +4,7 @@
 
 ## Overview
 
-Terraform is a very popular tool used for infra tasks automation, and it works on all major cloud providers. DigitalOcean is no exception.
+Terraform is a very popular tool used for infra tasks automation, and it works very well for all major cloud providers. [DigitalOcean](https://www.digitalocean.com) is no exception.
 
 The Terraform code provided in this repository is able to:
 
@@ -25,7 +25,7 @@ All important aspects are configured via Terraform input variables. A [mastodon.
 
 ## Requirements
 
-The only requirement is [Terraform CLI](https://developer.hashicorp.com/terraform/downloads) installed on your machine, and at least some basic knowledge about the tool and main concepts. You also need your DigitalOcean access token at hand.
+The only requirement is [Terraform CLI](https://developer.hashicorp.com/terraform/downloads) installed on your machine, and at least some basic knowledge about the tool and main Terraform concepts. You also need your DigitalOcean access token at hand.
 
 ## Managing DOKS Configuration
 
